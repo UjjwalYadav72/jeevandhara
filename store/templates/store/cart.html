@@ -1,0 +1,62 @@
+{% extends 'store/main.html' %}
+{% load static %}
+{% block content %}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="box-element cart-box ">
+            <a class="btn btn-outline-success" href="{% url 'store' %}">&#x2190; Continue Shopping</a>
+            <img id="empty_cart" class="d-block" src="{% static 'images/local/sleeping_face.png' %}" alt="" srcset="">
+        </div>
+        <div class="box-element cart-box d-none">
+            <a class="btn btn-outline-dark" id="back_to_store" href="{% url 'store' %}">&#x2190; Continue
+                Shopping</a><br><br>
+            <table class="table">
+                <tr>
+                    <th>
+                        <h5>Items: <Strong class="cart-items">{{cartItems}}</Strong></h5>
+                    </th>
+                    <th>
+                        <h5>Total: <Strong class="cart-total">₹{{cartTotal|floatformat:2}}</Strong></h5>
+                    </th>
+                    <th><a style="float: right;margin: 5px;" href="{% url 'checkout' %}"
+                            class="btn btn-success">Checkout</a>
+                    </th>
+                </tr>
+            </table>
+        </div><br>
+        <div id="cart-items" class="box-element cart-box d-none">
+            <div class="cart-row">
+                <div style="flex:2" class=""></div>
+                <div style="flex:1" class=""><strong>Item</strong></div>
+                <div style="flex:1" class=""><strong>Price</strong></div>
+                <!-- <div style="flex:1" class=""><strong>Quantity</strong></div> -->
+                <div style="flex:1" class=""><strong>Total</strong></div>
+                <div style="flex:1" class=""><strong></strong></div>
+
+            </div>
+            {% for item in items %}
+            <div class="row{{item.product.id}} cart-row" width=>
+                <div style="flex:2" class=""><img src="{{item.product.imageURL}}" class="row-image"></div>
+                <div style="flex:1" class="">{{item.product.name}}</div>
+                <div style="flex:1" class="">₹{{item.product.price|floatformat:2}}(<span
+                        id="q{{item.product.id}}">{{item.quantity}}</span>)
+                </div>
+
+                <div style="flex:1" class="item-total" id="t{{item.product.id}}">
+                    ₹{{item.get_total|floatformat:2}}</div>
+                <div style="flex:1" class="m-0 p-0 row{{item.product.id}}">
+                    <span data-product="{{item.product.id}}" data-action="add"
+                        class="update-cart btn btn-outline-success  add-btn update-cart store-update-cart mb-1">
+                        <span style="position: relative;top: -9px;">+</span></span>
+
+                    <span data-product="{{item.product.id}}" data-action="remove"
+                        class="update-cart btn btn-outline-danger add-btn update-cart store-update-cart mb-1 ">
+                        <span style="position: relative;top: -9px;">-</span></span>
+                </div>
+            </div>
+
+            {% endfor %}
+        </div>
+    </div>
+</div>{% endblock content %}
