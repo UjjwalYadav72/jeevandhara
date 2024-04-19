@@ -2,20 +2,51 @@ let updateBtns = document.querySelectorAll(".update-cart");
 let cartItems = document.querySelectorAll(".cart-items");
 let cartTotal = document.querySelectorAll(".cart-total");
 let product_prices = document.querySelectorAll(".product-price")
-let itemQuantity, itemTotal;
-
+let itemQuantity, itemTotal, a;
+const BASE_URL = 'http://127.0.0.1:8000/'
 document.addEventListener("DOMContentLoaded", () => {
+    swap_prices();
+    updateQuantities();
     if (cartItems[0].innerHTML !== '0') {
+        console.log("cartitems");
         document.querySelectorAll(".cart-box").forEach(element => {
             element.classList.toggle("d-none");
+
         });
     } else {
+        console.log("fail");
         cartItems[0].classList.add("d-none");
         cartItems[1].classList.remove("d-lg-inline");
     }
-});
 
-// product_prices.forEach(i => i.addEventListener("click", () => alert("clicked")))
+
+});
+function swap_prices() {
+    document.querySelectorAll(".options").forEach((i) => i.addEventListener("click", () => {
+        a = i.childNodes[1].id.substring(2)
+        document.querySelector(`#${i.dataset.productName}incr`).setAttribute("data-product", a)
+        document.querySelector(`#${i.dataset.productName}decr`).setAttribute("data-product", a)
+        document.querySelector(`h4[iqMain${i.dataset.productName}]`).innerHTML = i.innerHTML
+        // updateQuantities()
+    }))
+}
+function updateQuantities() {
+    if (window.location.href == BASE_URL) {
+        console.log("Hello");
+        document.querySelectorAll(".iq").forEach(i => {
+            fetch(`/update_item?id=${i.id.substring(2)}`, {
+                method: "GET"
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.quantity > 0) {
+                        i.innerHTML = data.quantity + "x"
+                        i.classList.remove("d-none")
+                    }
+                })
+        })
+    }
+}
 
 updateBtns.forEach(btn => {
     btn.addEventListener("click", function () {
@@ -78,7 +109,7 @@ function updateUserOrder(productId, action) {
                 if (data.cartItems == 0) {
                     cartItems[0].classList.add("d-none");
                     cartItems[1].classList.remove("d-lg-inline");
-                    if (window.location.href == "http://127.0.0.1:8000/cart/") {
+                    if (window.location.href == `${BASE_URL}cart/`) {
                         document.querySelectorAll(".box-element").forEach(element => {
                             element.classList.toggle("d-none");
                         });
