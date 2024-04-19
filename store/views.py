@@ -4,14 +4,16 @@ from django.http import JsonResponse, HttpResponse
 from .models import *
 import datetime
 
-products = Product.objects.all()
 
-
-# Create your views here.
+# Views
 def store(request):
     # return HttpResponse("hello")
     if request.user.is_authenticated:
         customer = request.user.customer
+        products = Product.objects.all().order_by("name")
+        product_list = {i.name: [] for i in products}
+        for i in products:
+            product_list[i.name].append(i)
         order, created = Order.objects.get_or_create(customer=customer, complete=False)
         items = order.orderitem_set.all()
         cartItems = order.get_cart_items
@@ -26,7 +28,7 @@ def store(request):
 
     context = {
         "items": items,
-        "products": products,
+        "products": product_list,
         "cartItems": cartItems,
         "cartTotal": cartTotal,
     }

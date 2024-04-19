@@ -213,6 +213,7 @@ h6 {
 
 .dropdown-menu>.product-price {
     border-radius: 10%;
+    padding-right: 0;
 }
 
 .dropdown-menu>.product-price:hover {
@@ -220,10 +221,19 @@ h6 {
     background-color: #bf7c3f;
 
 
+
+}
+
+.dropdown-toggle {
+    padding-right: 2px;
 }
 
 .dropdown-menu {
-    min-width: 110%;
+    min-width: 105%;
     background-color: #3f1619;
     padding: 0;
+}
+
+.iq {
+    font-size: medium !important;
 }
