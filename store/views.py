@@ -1,6 +1,6 @@
 import json
 from django.shortcuts import render
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from .models import *
 import datetime
 
@@ -9,6 +9,7 @@ products = Product.objects.all()
 
 # Create your views here.
 def store(request):
+    return HttpResponse("hello")
     if request.user.is_authenticated:
         customer = request.user.customer
         order, created = Order.objects.get_or_create(customer=customer, complete=False)
