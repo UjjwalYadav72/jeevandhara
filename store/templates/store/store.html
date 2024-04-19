@@ -1,62 +1,60 @@
 {% extends 'store/main.html' %}
 {% load static %}
 {% block content %}
+<script>var products = `{{products}}`</script>
 <div class="row">
-    {% for product in products %}
-    <div class="col-xl-0 col-lg-0 col-md-0 col-sm-1 "></div>
+    {% for product_name,products_data in products.items %}
+    <div class="col-xl-0 col-lg-0 col-md-0 col-sm-1 ">
+    </div>
     <div class="col-xl-3 col-lg-4 col-md-6 col-sm-10 col-xs-8 store-product-box mx-sm-auto mx-md-0 mx-lg-0 mx-xl-0">
-        <img class="thumbnail" src="{{product.imageURL}}">
+        <img class="thumbnail" src="{{products_data.0.imageURL}}">
+
+
         <div class="box-element product">
-            <h6><strong>{{product.name}} - {{product.weight_class}}</strong></h6>
+
+            <h6><strong>{{product_name}}</strong></h6>
 
             <hr>
             <span data-product="{{product.id}}" data-action="add" style="border-radius: 20% 0 0 20%;"
-                class=" btn btn-outline-success add-btn update-cart store-update-cart "><span
-                    style="position: relative;top: -9px;">+</span></span>
+                class=" btn btn-outline-success add-btn update-cart store-update-cart ">
+                <span style="position: relative;top: -9px;">+</span>
+            </span>
             <span data-product="{{product.id}}" data-action="remove" style="border-radius: 0 20% 20% 0;
-            " class=" btn btn-outline-danger add-btn update-cart store-update-cart "><span
-                    style="position: relative;top: -9px;">-</span></span>
-            <!-- <div class="d-inline-block ms-md-5" style=" min-width: 50px;" class=""><span
-                    class="d-flex justify-content-end">
-                    <h5 class="iq d-none" id="iq{{product.id}}" style=""></h5>
-                </span></div> -->
+            " class=" btn btn-outline-danger add-btn update-cart store-update-cart ">
+                <span style="position: relative;top: -9px;">-</span>
+            </span>
 
-            <!-- <span class="product-price">₹{{product.price|floatformat:2}}</span> -->
+
+
             <div style="float: right;" class="d-inline-block dropup-center dropup ">
+
                 <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <h4 style="display: inline; color: inherit !important;"
                         class="product-price {{product.id}} dropdown-item" href="#">
-                        <span class="d-none iq" id="iq{{product.id}}"
-                            style=""></span>&nbsp;₹{{product.price|floatformat:2}}
+                        <span class="d-none iq"
+                            id="iq{{product.id}}"></span>&nbsp;₹{{products_data.0.price|floatformat:2}} -
+                        {{products_data.0.weight_class}}
                     </h4>
-                </button>
+                </button>&nbsp;&nbsp;
+
                 <ul class="dropdown-menu">
+                    {% for product in products_data %}
                     <h4 class="product-price {{product.id}} dropdown-item m-0">
                         <span style="display: inline-block;" class="iq d-none" id="iq{{product.id}}">
                         </span>
-                        &nbsp;₹{{product.price|floatformat:2}}
+                        &nbsp;₹{{product.price|floatformat:2}} - {{product.weight_class}}
 
                     </h4>
-                    <h4 class="product-price {{product.id}} dropdown-item m-0">
-
-                        <span style="display: inline-block;" class="iq d-none" id="iq{{product.id}}">
-                        </span>
-                        &nbsp;₹{{product.price|floatformat:2}}
-                    </h4>
-                    <h4 class="product-price {{product.id}} dropdown-item m-0">
-
-                        <span style="display: inline-block;" class="iq d-none" id="iq{{product.id}}">
-                        </span>
-                        &nbsp;₹{{product.price|floatformat:2}}
-                    </h4>
+                    {% endfor %}
                 </ul>
             </div>
-            <!-- </h4> -->
         </div>
     </div>
     <div class="col-xl-0 col-lg-0 col-md-0 col-sm-1"></div>
     {% endfor %}
 </div>
+
+
 <script>
     document.querySelectorAll(".iq").forEach(i => {
         fetch(`/update_item?id=${i.id.substring(2)}`, {
