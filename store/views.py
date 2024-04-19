@@ -9,7 +9,7 @@ products = Product.objects.all()
 
 # Create your views here.
 def store(request):
-    return HttpResponse("hello")
+    # return HttpResponse("hello")
     if request.user.is_authenticated:
         customer = request.user.customer
         order, created = Order.objects.get_or_create(customer=customer, complete=False)
