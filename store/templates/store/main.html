@@ -12,22 +12,8 @@
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
     <script type="text/javascript">
         var user = '{{request.user}}'
-        function getToken(name) {
-            let cookieValue = null;
-            if (document.cookie && document.cookie !== '') {
-                const cookies = document.cookie.split(';');
-                for (let i = 0; i < cookies.length; i++) {
-                    const cookie = cookies[i].trim();
-                    // Does this cookie string begin with the name we want?
-                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
-                    }
-                }
-            }
-            return cookieValue;
-        }
-        const csrftoken = getToken('csrftoken');
+        console.log(user);
+
     </script>
 </head>
 
@@ -35,7 +21,7 @@
 
     <nav class="navbar navbar-dark navbar-expand-lg">
         <div class="container-fluid">
-            <a class="navbar-brand" style="" href="{% url 'store' %}">Jeevan Dhara</a>
+            <a class="navbar-brand" href="{% url 'store' %}">Jeevan Dhara</a>
 
 
             <a class=" navbar-brand ms-auto me-1 m-1 d-lg-none" href="{% url 'cart' %}">
@@ -57,7 +43,10 @@
                         <a class="nav-link active btn" style="float:right;" aria-current="page" href="#">Profile</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link btn" style="color:inherit;float:left" aria-current="page" href="#">Login</a>
+                        <a class="nav-link btn" style="color:inherit;float:left" aria-current="page"
+                            href='login?username=Ujjwal&password=1_2_3_4_'>Login</a>
+                        <a class="nav-link btn" style="color:inherit;float:right" aria-current="page"
+                            href="{% url 'logout' %}"> Logout</a>
 
                     </li>
 
@@ -85,7 +74,7 @@
         crossorigin="anonymous"></script>
 
     <script src="{% static 'js/cart.js' %}"></script>
-    
+
 
 </body>
 
