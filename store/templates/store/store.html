@@ -15,12 +15,12 @@
             <h6><strong>{{product_name}}</strong></h6>
 
             <hr>
-            <span data-product="{{product.id}}" data-action="add" style="border-radius: 20% 0 0 20%;"
-                class=" btn btn-outline-success add-btn update-cart store-update-cart ">
+            <span data-product="{{products_data.0.id}}" data-action="add" style="border-radius: 20% 0 0 20%;"
+                class=" btn btn-outline-success add-btn update-cart store-update-cart" id="{{product_name}}incr">
                 <span style="position: relative;top: -9px;">+</span>
             </span>
-            <span data-product="{{product.id}}" data-action="remove" style="border-radius: 0 20% 20% 0;
-            " class=" btn btn-outline-danger add-btn update-cart store-update-cart ">
+            <span data-product="{{products_data.0.id}}" data-action="remove" style="border-radius: 0 20% 20% 0;
+            " class=" btn btn-outline-danger add-btn update-cart store-update-cart " id="{{product_name}}decr">
                 <span style="position: relative;top: -9px;">-</span>
             </span>
 
@@ -28,21 +28,22 @@
 
             <div style="float: right;" class="d-inline-block dropup-center dropup ">
 
-                <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <h4 style="display: inline; color: inherit !important;"
-                        class="product-price {{product.id}} dropdown-item" href="#">
-                        <span class="d-none iq"
-                            id="iq{{product.id}}"></span>&nbsp;₹{{products_data.0.price|floatformat:2}} -
+                <span onclick="updateQuantityInFocus(this)" class="dropdown-toggle" type="button"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    <h4 style="display: inline; color: inherit !important; min-width: none;" iqMain{{product_name}}
+                        class="product-price dropdown-item" href="#">
+                        <span class="iq{{products_data.0.id}} d-none iq " id="iq{{products_data.0.id}}"></span>
+                        ₹{{products_data.0.price|floatformat:2}} -
                         {{products_data.0.weight_class}}
                     </h4>
-                </button>&nbsp;&nbsp;
+                </span>
 
                 <ul class="dropdown-menu">
                     {% for product in products_data %}
-                    <h4 class="product-price {{product.id}} dropdown-item m-0">
-                        <span style="display: inline-block;" class="iq d-none" id="iq{{product.id}}">
-                        </span>
-                        &nbsp;₹{{product.price|floatformat:2}} - {{product.weight_class}}
+                    <h4 class="product-price dropdown-item options" data-product-name="{{product_name}}">
+                        <span style="display: inline-block;" class="iq{{product.id}} iq d-none "
+                            id="iq{{product.id}}"></span>
+                        ₹{{product.price|floatformat:2}} - {{product.weight_class}}
 
                     </h4>
                     {% endfor %}
@@ -55,19 +56,4 @@
 </div>
 
 
-<script>
-    document.querySelectorAll(".iq").forEach(i => {
-        fetch(`/update_item?id=${i.id.substring(2)}`, {
-            method: "GET"
-        })
-            .then(res => res.json())
-            .then(data => {
-                if (data.quantity > 0) {
-                    i.innerHTML = data.quantity + "x"
-                    i.classList.remove("d-none")
-                }
-            })
-    })
-
-</script>
 {% endblock content %}

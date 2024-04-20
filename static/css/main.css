@@ -11,6 +11,11 @@ h6 {
     color: hsl(0, 0%, 30%);
 }
 
+h4 {
+    font-size: 20px;
+    position: relative;
+}
+
 * {
     color: #bf7c3f !important;
     z-index: 0;
@@ -178,7 +183,6 @@ h6 {
 
 .btn {
     transition: all 0.5s;
-
 }
 
 .row-image:hover {
@@ -212,14 +216,13 @@ h6 {
 }
 
 .dropdown-menu>.product-price {
-    border-radius: 10%;
-    padding-right: 0;
+    /* padding-right: 0; */
 }
 
 .dropdown-menu>.product-price:hover {
     color: #3f1619 !important;
     background-color: #bf7c3f;
-
+    cursor: pointer;
 
 
 }
@@ -229,11 +232,30 @@ h6 {
 }
 
 .dropdown-menu {
-    min-width: 105%;
+    min-width: 90%;
     background-color: #3f1619;
     padding: 0;
 }
 
-.iq {
+ul>h4>.iq {
     font-size: medium !important;
+    color: inherit;
+    position: absolute;
+    background-color: #3f1619;
+    left: -30px;
+    min-width: 40px;
+    text-align: center;
+    bottom: 2px;
+    top: 5px;
+    padding-right: 2px;
+    border-radius: 20% 0 0 20%;
+    border: #bf7c3f 2px solid;
 }
+
+ul>h4>.iq:hover {
+    color: #3f1619 !important;
+    background-color: #bf7c3f !important;
+    border-color: #3f1619 !important;
+}
+
+/* .btn:active */
