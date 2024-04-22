@@ -8,7 +8,13 @@ document.addEventListener("DOMContentLoaded", () => {
     csrftoken = getToken('csrftoken');
 
     if (user !== "AnonymousUser") {
-        updateQuantities(); swap_prices();
+        // window.onload = () => {
+        updateQuantities();
+        swap_prices();
+        document.querySelectorAll(".account").forEach(i => {
+            i.classList.toggle("d-none")
+        })
+        // }
     }
 
     if (cartItems[0].innerHTML !== '0') {
@@ -26,11 +32,11 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 function login() {
     if (user == 'AnonymousUser' || user == "") {
-        let username = prompt("name")
-        let password = prompt("password")
-        console.log(username, password)
+        // let username = prompt("name")
+        // let password = prompt("password")
+        // console.log(username, password)
         try {
-            fetch(`login?username=${username}&password=${password}`, {
+            fetch(`login?username=Ujjwal&password=1_2_3_4_`, {
                 method: "GET"
             })
                 .then(res => res.json())
@@ -39,6 +45,7 @@ function login() {
 
         } catch { }
     }
+
     updateQuantities()
 }
 function logout() {
@@ -60,27 +67,27 @@ function swap_prices() {
         a = i.childNodes[1].id.substring(2)
         document.querySelector(`#${i.dataset.productName}incr`).setAttribute("data-product", a)
         document.querySelector(`#${i.dataset.productName}decr`).setAttribute("data-product", a)
-        // updateQuantities()
+        updateQuantities()
 
     }))
 }
 function updateQuantities() {
-    if (window.location.href == BASE_URL) {
-        // console.log("Hello");
-        document.querySelectorAll(".iq").forEach(i => {
-            console.log(i);
-            fetch(`/update_item?id=${i.id.substring(2)}`, {
-                method: "GET"
-            })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.quantity > 0) {
-                        i.innerHTML = data.quantity + "x"
-                        i.classList.remove("d-none")
-                    }
-                })
+    // if (window.location.href == BASE_URL) {
+    // console.log("Hello");
+    document.querySelectorAll(".iq").forEach(i => {
+        console.log(i);
+        fetch(`/update_item?id=${i.id.substring(2)}`, {
+            method: "GET"
         })
-    }
+            .then(res => res.json())
+            .then(data => {
+                if (data.quantity > 0) {
+                    i.innerHTML = data.quantity + "x"
+                    i.classList.remove("d-none")
+                }
+            })
+    })
+    // }
 }
 function updateQuantityInFocus(e) {
     a = e.childNodes[1].childNodes[1].id
@@ -116,7 +123,7 @@ updateBtns.forEach(btn => {
 });
 
 function updateUserOrder(productId, action) {
-    csrftoken = getToken('csrftoken');
+    // csrftoken = getToken('csrftoken');
     console.log("User is logged in, sending data...");
     const url = '/update_item/';
     try {
@@ -188,4 +195,42 @@ function getToken(name) {
         }
     }
     return cookieValue;
+}
+function submitFormData() {
+    console.log(`Payment button clicked`);
+    // alert(`Payment button clicked`);
+    var userFormData = {
+        name: null,
+        email: null,
+        total: total,
+    }
+    var shippingInfo = {
+        address: form.address.value,
+        city: form.city.value,
+        state: form.state.value,
+        pincode: form.pincode.value,
+    }
+    if (user == "AnonymousUser") {
+        userFormData.name = form.name.value
+        userFormData.email = form.email.value
+    }
+
+    var url = "/process_order/"
+    fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": csrftoken,
+
+        },
+        body: JSON.stringify({ form: userFormData, shipping: shippingInfo, })
+    })
+        .then((res) => res.json())
+        .then((data) => {
+            console.log("Success: ", data);
+            alert("Transation Completed, Redirecting to homepage")
+            setTimeout(() =>
+                window.location.href = BASE_URL
+                , 1000);
+        })
 }

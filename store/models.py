@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
+# class TempCustomer(models.Model):
+#     pass
 class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=200, null=True)
@@ -18,7 +20,11 @@ class Product(models.Model):
     image = models.ImageField(null=True, blank=True)
 
     def __str__(self) -> str:
-        return self.name + "_" + self.weight_class
+        try:
+            a = self.name + "_" + self.weight_class
+        except:
+            a = self.name
+        return a
 
     @property
     def imageURL(self):
@@ -89,7 +95,7 @@ class ShippingAddress(models.Model):
     address = models.CharField(max_length=200, null=True)
     city = models.CharField(max_length=200, null=True)
     state = models.CharField(max_length=200, null=True)
-    zipcode = models.CharField(max_length=200, null=True)
+    pincode = models.CharField(max_length=200, null=True)
     date_added = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

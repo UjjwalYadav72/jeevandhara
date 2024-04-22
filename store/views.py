@@ -109,58 +109,93 @@ def checkout(request):
 
 def updateItem(request):
     OrderItem.objects.filter(quantity=0).delete()
-    if request.method == "POST":
-        data = json.loads(request.body)
-        productId = data["productId"]
-        action = data["action"]
-        print("Action:", action)
-        print("Product:", productId)
-        customer = request.user.customer
-        product = Product.objects.get(id=productId)
-        order, created = Order.objects.get_or_create(customer=customer, complete=False)
-        orderItem, created = OrderItem.objects.get_or_create(
-            order=order, product=product
-        )
+    try:
+        if request.method == "POST":
+            data = json.loads(request.body)
+            productId = data["productId"]
+            action = data["action"]
+            print("Action:", action)
+            print("Product:", productId)
+            customer = request.user.customer
+            product = Product.objects.get(id=productId)
+            order, created = Order.objects.get_or_create(
+                customer=customer, complete=False
+            )
+            orderItem, created = OrderItem.objects.get_or_create(
+                order=order, product=product
+            )
 
-        if action == "add":
-            orderItem.quantity += 1
-        elif action == "remove":
-            orderItem.quantity -= 1
-        orderItem.save()
+            if action == "add":
+                orderItem.quantity += 1
+            elif action == "remove":
+                orderItem.quantity -= 1
+            orderItem.save()
 
-        if orderItem.quantity <= 0:
-            orderItem.delete()
+            if orderItem.quantity <= 0:
+                orderItem.delete()
 
-        return JsonResponse(
-            {
-                # "order": order,
-                "cartItems": order.get_cart_items,
-                "cartTotal": order.get_cart_total,
-                "itemQuantity": orderItem.quantity,
-                "itemTotal": orderItem.get_total,
-            }
-        )
-    else:
-        productId = request.GET.get("id")
-        customer = request.user.customer
-        product = Product.objects.get(id=productId)
-        order, created = Order.objects.get_or_create(customer=customer, complete=False)
-        orderItem, created = OrderItem.objects.get_or_create(
-            order=order, product=product
-        )
-        print("GET", customer, productId, orderItem.quantity)
-        context = {"quantity": orderItem.quantity}
-        if orderItem.quantity == 0:
-            orderItem.delete()
-        return JsonResponse(context, safe=False)
+            return JsonResponse(
+                {
+                    # "order": order,
+                    "cartItems": order.get_cart_items,
+                    "cartTotal": order.get_cart_total,
+                    "itemQuantity": orderItem.quantity,
+                    "itemTotal": orderItem.get_total,
+                }
+            )
+        else:
+            productId = request.GET.get("id")
+            customer = request.user.customer
+            product = Product.objects.get(id=productId)
+            order, created = Order.objects.get_or_create(
+                customer=customer, complete=False
+            )
+            orderItem, created = OrderItem.objects.get_or_create(
+                order=order, product=product
+            )
+            print("GET", customer, productId, orderItem.quantity)
+            context = {"quantity": orderItem.quantity}
+            if orderItem.quantity == 0:
+                orderItem.delete()
+            return JsonResponse(context, safe=False)
+    except:
+        orderItems = OrderItem.objects.all()
+        for i in orderItems:
+            if (
+                OrderItem.objects.filter(
+                    product_id=i.product_id, order_id=i.order_id
+                ).count()
+                > 1
+            ):
+                i.delete()
+        updateItem()
 
 
 def processOrder(request):
     print("Data", request.body)
     transaction_id = datetime.datetime.now().timestamp()
+    data = json.loads(request.body)
+
     if request.user.is_authenticated:
         customer = request.user.customer
         order, created = Order.objects.get_or_create(customer=customer, complete=False)
+        total = float(data["form"]["total"])
+        order.trasaction_id = transaction_id
+        if total == order.get_cart_total:
+            order.complete = True
+        order.save()
+
+        ShippingAddress.objects.create(
+            customer=customer,
+            order=order,
+            address=data["shipping"]["address"],
+            city=data["shipping"]["city"],
+            state=data["shipping"]["state"],
+            pincode=data["shipping"]["pincode"],
+        )
+
+    else:
+        print("User is not logged in")
     return JsonResponse({"message": "Payment Complete"})
 
 

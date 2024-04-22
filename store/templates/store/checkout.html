@@ -27,7 +27,7 @@
                         <input class="form-control" type="text" name="state" placeholder="State..">
                     </div>
                     <div class="form-field">
-                        <input class="form-control" type="text" name="zipcode" placeholder="Zip code..">
+                        <input class="form-control" type="text" name="pincode" placeholder="Zip code..">
                     </div>
                     <!-- <div class="form-field">
                         <input class="form-control" type="text" name="country" placeholder="Zip code..">
@@ -85,43 +85,6 @@
     document.querySelector(`#make-payment`).addEventListener("click", e => {
         submitFormData()
     })
-    function submitFormData() {
-        console.log(`Payment button clicked`);
-        // alert(`Payment button clicked`);
-        var userFormData = {
-            name: null,
-            email: null,
-            total: total,
-        }
-        var shippingInfo = {
-            address: form.address.value,
-            city: form.city.value,
-            state: form.state.value,
-            zipcode: form.zipcode.value,
-        }
-        if (user == "AnonymousUser") {
-            userFormData.name = form.name.value
-            userFormData.email = form.email.value
-        }
-
-        var url = "/process_order/"
-        fetch(url, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRFToken": csrftoken,
-
-            },
-            body: JSON.stringify({ form: userFormData, shipping: shippingInfo, })
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                console.log("Success: ", data);
-                alert("Transation Completed, Redirecting to homepage")
-                setTimeout(() =>
-                    window.location.href = "{% url 'store' %}"
-                    , 1000);
-            })
-    }
+    
 </script>
 {% endblock content %}

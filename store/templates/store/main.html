@@ -14,10 +14,11 @@
         var user = '{{request.user}}'
         console.log(user);
 
+
     </script>
 </head>
 
-<body>
+<body class="p-0 m-0">
 
     <nav class="navbar navbar-dark navbar-expand-lg">
         <div class="container-fluid">
@@ -40,18 +41,22 @@
                     <li class="nav-item">
                         <a class="nav-link active btn" style="float:left" aria-current="page"
                             href="{% url 'store' %}">Home</a>
-                        <a class="nav-link active btn" style="float:right;" aria-current="page" href="#">Profile</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link btn" style="color:inherit;float:left" aria-current="page"
-                            href='login?username=Ujjwal&password=1_2_3_4_'>Login</a>
-                        <a class="nav-link btn" style="color:inherit;float:right" aria-current="page"
-                            href="{% url 'logout' %}"> Logout</a>
+                        <a id="profile-btn" class="nav-link account active btn d-none" style="float:left;"
+                            aria-current="page" href="#">Profile</a>
+                        <a id="logout-btn" class="nav-link account btn d-none" style="color:inherit;float: right;"
+                            aria-current="page" href="{% url 'logout' %}">Logout</a>
+                    </li>
+                    <li class="nav-item">
+                        <a id="login-btn" class="nav-link account btn" style="color:inherit" aria-current="page"
+                            href='/login?username=Ujjwal&password=1_2_3_4_' onclick="login()">Login</a>
 
                     </li>
 
                 </div>
             </div>
+
             <a class="navbar-brand ms-auto me-1 m-1 d-none d-lg-inline" href="{% url 'cart' %}">
 
                 <img width="40" src="{% static 'images/local/basket.png' %}" alt="">

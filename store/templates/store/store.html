@@ -4,37 +4,35 @@
 <script>var products = `{{products}}`</script>
 <div class="row">
     {% for product_name,products_data in products.items %}
-    <div class="col-xl-0 col-lg-0 col-md-0 col-sm-1 ">
+    <div class="d-xl-none d-lg-none d-md-none col-sm-1 ">
     </div>
     <div class="col-xl-3 col-lg-4 col-md-6 col-sm-10 col-xs-8 store-product-box mx-sm-auto mx-md-0 mx-lg-0 mx-xl-0">
-        <img class="thumbnail" src="{{products_data.0.imageURL}}">
+
 
 
         <div class="box-element product">
-
+            <img class="thumbnail" src="{{products_data.0.imageURL}}">
             <h6><strong>{{product_name}}</strong></h6>
 
             <hr>
-            <span data-product="{{products_data.0.id}}" data-action="add" style="border-radius: 20% 0 0 20%;"
+            <span data-product="{{products_data.0.id}}" data-action="add" style="border-radius: 20px 0 0 20px;"
                 class=" btn btn-outline-success add-btn update-cart store-update-cart" id="{{product_name}}incr">
                 <span style="position: relative;top: -9px;">+</span>
             </span>
-            <span data-product="{{products_data.0.id}}" data-action="remove" style="border-radius: 0 20% 20% 0;
+            <span data-product="{{products_data.0.id}}" data-action="remove" style="border-radius: 0 20px 20px 0;
             " class=" btn btn-outline-danger add-btn update-cart store-update-cart " id="{{product_name}}decr">
                 <span style="position: relative;top: -9px;">-</span>
             </span>
 
 
-
             <div style="float: right;" class="d-inline-block dropup-center dropup ">
 
-                <span onclick="updateQuantityInFocus(this)" class="dropdown-toggle" type="button"
-                    data-bs-toggle="dropdown" aria-expanded="false">
+                <span onclick="updateQuantities()" class="dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
                     <h4 style="display: inline; color: inherit !important; min-width: none;" iqMain{{product_name}}
-                        class="product-price dropdown-item" href="#">
+                        class="product-price dropdown-item options" href="#">
                         <span class="iq{{products_data.0.id}} d-none iq " id="iq{{products_data.0.id}}"></span>
-                        ₹{{products_data.0.price|floatformat:2}} -
-                        {{products_data.0.weight_class}}
+                        ₹{{products_data.0.price|floatformat:2}}-/{{products_data.0.weight_class}}
                     </h4>
                 </span>
 
