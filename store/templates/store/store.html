@@ -2,30 +2,18 @@
 {% load static %}
 {% block content %}
 <script>var products = `{{products}}`</script>
-<div class="row">
+<div class="row gx-2">
     {% for product_name,products_data in products.items %}
-    <div class="d-xl-none d-lg-none d-md-none col-sm-1 ">
+    <div class="d-xl-none d-lg-none d-md-none col-1 ">
     </div>
-    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-10 col-xs-8 store-product-box mx-sm-auto mx-md-0 mx-lg-0 mx-xl-0">
-
-
-
+    <div class="col-lg-4 col-md-6 col-sm-10  store-product-box ">
         <div class="box-element product">
             <img class="thumbnail" src="{{products_data.0.imageURL}}">
-            <h6><strong>{{product_name}}</strong></h6>
-
-            <hr>
-            <span data-product="{{products_data.0.id}}" data-action="add" style="border-radius: 20px 0 0 20px;"
-                class=" btn btn-outline-success add-btn update-cart store-update-cart" id="{{product_name}}incr">
-                <span style="position: relative;top: -9px;">+</span>
-            </span>
-            <span data-product="{{products_data.0.id}}" data-action="remove" style="border-radius: 0 20px 20px 0;
-            " class=" btn btn-outline-danger add-btn update-cart store-update-cart " id="{{product_name}}decr">
-                <span style="position: relative;top: -9px;">-</span>
-            </span>
+            <h6 style="width: 100%; border-bottom: 1px solid; text-align: center;"><strong>{{product_name}}</strong>
+            </h6>
 
 
-            <div style="float: right;" class="d-inline-block dropup-center dropup ">
+            <div class="d-inline-block dropup-center dropup">
 
                 <span onclick="updateQuantities()" class="dropdown-toggle" type="button" data-bs-toggle="dropdown"
                     aria-expanded="false">
@@ -47,10 +35,20 @@
                     {% endfor %}
                 </ul>
             </div>
+            <div>
+                <span data-product="{{products_data.0.id}}" data-action="add" style="border-radius: 20px 0 0 20px;"
+                    class=" btn btn-outline-success add-btn update-cart store-update-cart" id="{{product_name}}incr">
+                    <span style="position: relative;top: -9px;">+</span>
+                </span>
+                <span data-product="{{products_data.0.id}}" data-action="remove" style="border-radius: 0 20px 20px 0;
+            " class=" btn btn-outline-danger add-btn update-cart store-update-cart " id="{{product_name}}decr">
+                    <span style="position: relative;top: -9px;">-</span>
+                </span>
+            </div>
         </div>
     </div>
-    <div class="col-xl-0 col-lg-0 col-md-0 col-sm-1"></div>
-    {% endfor %}
+    <div class="d-xl-none d-lg-none d-md-none col-sm-1  col-xs-1">
+    </div> {% endfor %}
 </div>
 
 
