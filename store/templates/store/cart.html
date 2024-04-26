@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
 
-<div class="row container cart ">
+<div class="row container cart m-0 p-0">
     <div class="col-lg-12 mx-auto">
         <div class="box-element cart-box px-lg-5">
             <a class="btn btn-outline-warning  ms-5 cart-buttons" href="{% url 'store' %}">&#x2190;
@@ -36,8 +36,8 @@
     </div><br>
     <div class="col-lg-12 mx-auto">
         <div id="cart-items" class="box-element cart-box d-none">
-            <div class="cart-row px-lg-5">
-                <div class="m-1"><a class="btn btn-outline-warning ms-5 cart-buttons" style="background-color: #3f1619;"
+            <div class="cart-row px-5">
+                <div class="m-1"><a class="btn btn-outline-warning  cart-buttons" style="background-color: #3f1619;;"
                         href="{% url 'clear_cart' %}" onclick="">Clear</a>
                 </div>
                 <!-- <div class="m-1"><strong>Item</strong></div>
@@ -47,18 +47,20 @@
 
             </div>
             {% for item in items %}
-            <div class="row{{item.product.id}} cart-row px-lg-5" width=>
+            <div class="row{{item.product.id}} cart-row px-lg-5 cart-row-flex" width=>
                 <!-- <div  class="m-1 d-sm-inline-block d-md-none"><img src="{{item.product.imageURL}}"
                         class="row-image "></div> -->
-                <div style="min-width: 150px !important;" class="m-0"><img src="{{item.product.imageURL}}"
-                        class="row-image"></div>
+                <div class="m-0"><img src="{{item.product.imageURL}}" class="row-image"></div>
                 <div class="m-1">{{item.product.name}}</div>
-                <div class="m-1">₹{{item.product.price|floatformat:2}}(<span
-                        id="q{{item.product.id}}">{{item.quantity}}</span>)
-                </div>
+                <div class="d-flex">
 
-                <div class="item-total m-1" id="t{{item.product.id}}">
-                    ₹{{item.get_total|floatformat:2}}</div>
+                    <div class="m-1">₹{{item.product.price|floatformat:2}}(<span
+                            id="q{{item.product.id}}">{{item.quantity}}</span>)
+                    </div>
+
+                    <div class="item-total m-1" id="t{{item.product.id}}">
+                        ₹{{item.get_total|floatformat:2}}</div>
+                </div>
                 <div class="m-0 p-0 row{{item.product.id}} m-1">
                     <span data-product="{{item.product.id}}" data-action="add"
                         class="update-cart btn btn-outline-success  add-btn update-cart store-update-cart mb-1">
