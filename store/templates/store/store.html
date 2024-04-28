@@ -9,33 +9,37 @@
     <div class="col-lg-4 col-md-6 col-sm-10  store-product-box ">
         <div class="box-element product">
             <img class="thumbnail" src="{{products_data.0.imageURL}}">
-            <h6 style="width: 100%; border-bottom: 1px solid; text-align: center;"><strong>{{product_name}}</strong>
-            </h6>
+            <h4 style="width: 100%; border-bottom: 1px solid; text-align: center;"><strong>{{product_name}}</strong>
+            </h4>
 
 
-            <div class="d-inline-block dropup-center dropup">
+            <div class="d-inline-block dropup-right dropup" style="position: relative;top: 5px;">
 
                 <span onclick="updateQuantities()" class="dropdown-toggle" type="button" data-bs-toggle="dropdown"
                     aria-expanded="false">
                     <h4 style="display: inline; color: inherit !important; min-width: none;" iqMain{{product_name}}
                         class="product-price dropdown-item options" href="#">
-                        <span class="iq{{products_data.0.id}} d-none iq " id="iq{{products_data.0.id}}"></span>
-                        ₹{{products_data.0.price|floatformat:2}}-/{{products_data.0.weight_class}}
+
+                        ₹{{products_data.0.price|floatformat:2}} - {{products_data.0.weight_class}}&nbsp;<span
+                            class="iq_dropdown{{products_data.0.id}} d-none iq_dropdown "
+                            id="iq_dropdown{{products_data.0.id}}"></span>
                     </h4>
                 </span>
 
                 <ul class="dropdown-menu">
                     {% for product in products_data %}
-                    <h4 class="product-price dropdown-item options" data-product-name="{{product_name}}">
-                        <span style="display: inline-block;" class="iq{{product.id}} iq d-none "
-                            id="iq{{product.id}}"></span>
-                        ₹{{product.price|floatformat:2}} - {{product.weight_class}}
+                    <h4 class="product-price dropdown-item options" data-product-name="{{product_name}}"
+                        style="border-bottom: 1px solid;">
+
+                        ₹{{product.price|floatformat:2}} - {{product.weight_class}}&nbsp;<span
+                            style="display: inline-block;" class="iq_dropdown{{product.id}} iq_dropdown d-none "
+                            id="iq_dropdown{{product.id}}"></span>
 
                     </h4>
                     {% endfor %}
                 </ul>
             </div>
-            <div>
+            <div class="d-inline-block" style="float: inline-end; bottom: 1.5px; position: relative;">
                 <span data-product="{{products_data.0.id}}" data-action="add" style="border-radius: 20px 0 0 20px;"
                     class=" btn btn-outline-success add-btn update-cart store-update-cart" id="{{product_name}}incr">
                     <span style="position: relative;top: -9px;">+</span>

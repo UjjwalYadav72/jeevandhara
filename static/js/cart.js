@@ -4,6 +4,7 @@ var cartTotal = document.querySelectorAll(".cart-total");
 var product_prices = document.querySelectorAll(".product-price")
 var itemQuantity, itemTotal, a, csrftoken;
 const BASE_URL = 'http://127.0.0.1:8000/'
+// alert("hello")
 document.addEventListener("DOMContentLoaded", () => {
     csrftoken = getToken('csrftoken');
 
@@ -64,7 +65,7 @@ function logout() {
 function swap_prices() {
     document.querySelectorAll(".options").forEach((i) => i.addEventListener("click", () => {
         document.querySelector(`h4[iqMain${i.dataset.productName}]`).innerHTML = i.innerHTML
-        a = i.childNodes[1].id.substring(2)
+        a = i.childNodes[1].id.substring(11)
         document.querySelector(`#${i.dataset.productName}incr`).setAttribute("data-product", a)
         document.querySelector(`#${i.dataset.productName}decr`).setAttribute("data-product", a)
         updateQuantities()
@@ -74,39 +75,39 @@ function swap_prices() {
 function updateQuantities() {
     // if (window.location.href == BASE_URL) {
     // console.log("Hello");
-    document.querySelectorAll(".iq").forEach(i => {
+    document.querySelectorAll(".iq_dropdown").forEach(i => {
         console.log(i);
-        fetch(`/update_item?id=${i.id.substring(2)}`, {
+        fetch(`/update_item?id=${i.id.substring(11)}`, {
             method: "GET"
         })
             .then(res => res.json())
             .then(data => {
                 if (data.quantity > 0) {
-                    i.innerHTML = data.quantity + "x"
+                    i.innerHTML = "x" + data.quantity
                     i.classList.remove("d-none")
                 }
             })
     })
     // }
 }
-function updateQuantityInFocus(e) {
-    a = e.childNodes[1].childNodes[1].id
-    console.log(a);
-    document.querySelectorAll("." + a).forEach(i => {
-        console.log(i);
-        fetch(`/update_item?id=${i.id.substring(2)}`, {
-            method: "GET"
-        })
-            .then(res => res.json())
-            .then(data => {
-                if (data.quantity > 0) {
-                    i.innerHTML = data.quantity + "x"
-                    i.classList.remove("d-none")
-                }
-                else { i.classList.add("d-none") }
-            })
-    })
-}
+// function updateQuantityInFocus(e) {
+//     a = e.childNodes[1].childNodes[1].id
+//     console.log(a);
+//     document.querySelectorAll("." + a).forEach(i => {
+//         console.log(i);
+//         fetch(`/update_item?id=${i.id.substring(11)}`, {
+//             method: "GET"
+//         })
+//             .then(res => res.json())
+//             .then(data => {
+//                 if (data.quantity > 0) {
+//                     i.innerHTML = "x" + data.quantity
+//                     i.classList.remove("d-none")
+//                 }
+//                 else { i.classList.add("d-none") }
+//             })
+//     })
+// }
 
 updateBtns.forEach(btn => {
     btn.addEventListener("click", function () {
@@ -141,7 +142,7 @@ function updateUserOrder(productId, action) {
                 if (data.cartItems >= 0) {
                     cartItems[0].classList.remove("d-none");
                     cartItems[1].classList.add("d-lg-inline");
-                    try { document.querySelector(`#iq${productId}`).classList.remove("d-none"); } catch { }
+                    try { document.querySelector(`#iq_dropdown${productId}`).classList.remove("d-none"); } catch { }
                     cartItems.forEach(item => {
                         item.innerHTML = data.cartItems;
                     });
@@ -155,10 +156,10 @@ function updateUserOrder(productId, action) {
                             itemQuantity.innerHTML = data.itemQuantity;
                             itemTotal.innerHTML = `₹${parseFloat(data.itemTotal)}`;
                         } catch {
-                            document.querySelector(`.iq${productId}`).innerHTML = data.itemQuantity + "x";
+                            document.querySelector(`.iq_dropdown${productId}`).innerHTML = "x" + data.itemQuantity;
                         }
                     } else {
-                        try { document.querySelector(`#iq${productId}`).classList.add("d-none"); } catch { }
+                        try { document.querySelector(`#iq_dropdown${productId}`).classList.add("d-none"); } catch { }
                         try {
                             document.querySelectorAll(`.row${productId}`).forEach(element => {
                                 element.classList.add("d-none");
@@ -167,7 +168,7 @@ function updateUserOrder(productId, action) {
                         }
                     }
                 }
-                if (data.cartItems == 0) {
+                if (cartItems[0].innerHTML == '0') {
                     cartItems[0].classList.add("d-none");
                     cartItems[1].classList.remove("d-lg-inline");
                     if (window.location.href == `${BASE_URL}cart/`) {

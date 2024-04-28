@@ -7,7 +7,9 @@ from .models import *
 import datetime
 
 
-# Views
+host = None
+
+
 def login_view(request):
     username = request.GET.get("username")
     password = request.GET.get("password")
@@ -30,7 +32,9 @@ def logout_view(request):
 
 
 def store(request):
-    print(request.user)
+    global host
+    host = request.get_host()
+    print(request.user, host)
     OrderItem.objects.filter(quantity=0).delete()
     products = Product.objects.all().order_by("name")
     product_list = {i.name: [] for i in products}
@@ -168,7 +172,7 @@ def updateItem(request):
                 > 1
             ):
                 i.delete()
-        updateItem()
+        return JsonResponse({"message": "failure"})
 
 
 def processOrder(request):
@@ -202,8 +206,10 @@ def processOrder(request):
 def clear_cart(request):
     user = User.objects.get(username=request.user)
     customer = Customer.objects.get(user=user)
-    order = Order.objects.get(customer=customer)
+    order = Order.objects.get(customer=customer, complete=0)
     orderItem = OrderItem.objects.filter(order=order)
-    orderItem.delete()
+    # print(orderItem.id)
+    for i in orderItem:
+        i.delete()
     print(user)
     return redirect("store")
